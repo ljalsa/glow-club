@@ -37,6 +37,21 @@ html[dir="rtl"] .group:after{right:auto;left:-15px}
 html[dir="rtl"] .bigscore{text-align:left}
 @media(max-width:980px){.langSwitch{top:10px;right:10px}html[dir="rtl"] .langSwitch{right:auto;left:10px}.shell{padding-top:58px}}
 
+
+.activitySection{margin-top:18px;padding:20px;border-radius:28px}
+.activityGrid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:12px}
+.activityCard{border:1px solid var(--line);background:var(--panel2);border-radius:18px;padding:13px;min-height:145px}
+.activityHead{display:flex;justify-content:space-between;gap:8px;align-items:center}
+.activityHead strong{font-size:13px}.activityHead small{font-size:8px;color:var(--muted)}
+.activityItems{display:flex;flex-wrap:wrap;gap:5px;margin-top:10px}
+.activityItem{font-size:8px;padding:6px 8px;border-radius:999px;background:var(--soft)}
+.activityEmpty{font-size:9px;color:var(--muted);margin-top:14px;line-height:1.5}
+.syncDot{display:inline-block;width:7px;height:7px;border-radius:50%;background:#7abf91;margin-inline-end:5px;box-shadow:0 0 0 4px rgba(122,191,145,.12)}
+.viewOnly{font-size:9px;color:var(--muted);background:var(--soft);padding:7px 9px;border-radius:999px}
+.check input:disabled{opacity:.35;cursor:not-allowed}.check.readonly{opacity:.72}
+@media(max-width:980px){.activityGrid{grid-template-columns:1fr 1fr}}
+@media(max-width:560px){.activityGrid{grid-template-columns:1fr}}
+
 </style>
 </head>
 <body data-theme="club">
@@ -89,6 +104,7 @@ html[dir="rtl"] .bigscore{text-align:left}
 <button data-route="munira">👑<br>Munira</button>
 </nav>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="app.js"></script>
 </body>
 </html>
