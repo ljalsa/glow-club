@@ -111,10 +111,11 @@ function nextFocus(id){return daily.find(x=>!done("d",id,dkey(),x))||null}
 function moodFor(id){let k=id+"|"+dkey();if(moodCache.has(k))return moodCache.get(k).mood;return localStorage.getItem("gc:mood:"+id+":"+dkey())||""}
 function formatTime(iso){if(!iso)return "";return new Date(iso).toLocaleTimeString(LANG==="ar"?"ar-SA":"en-US",{hour:"numeric",minute:"2-digit"})}
 
-function renderGroup(){
- let c=clubPct(),b=badgeData(),all=Object.keys(P).every(id=>dayPct(id)===100);
- qs("#group").innerHTML='<div class="group glass"><div class="grouphead"><div><div class="eyebrow">'+t("ourProgress")+'</div><h2>'+t("fourGirls")+'</h2><p>'+t("overallDesc")+'</p></div><div class="bigscore">'+hearts(c,true)+'<strong>'+c+'%</strong><small class="sub">'+t("clubAdherence")+'</small></div></div><div class="girls">'+Object.keys(P).map(id=>{let p=P[id],a=adherence(id);return '<button class="girl" data-route="'+id+'"><div class="girltop"><span>'+p.icon+' '+shortName(id)+'</span><strong>'+a+'%</strong></div>'+hearts(a)+'<div class="girlmeta"><span>🔥 '+streak(id)+' '+t("dayStreak")+'</span><span>✦ '+level(a)+'</span></div></button>'}).join('')+'</div><div class="clubstats"><div class="clubstat"><strong>'+todayTogether()+'%</strong><span>'+t("todayTogether")+'</span></div><div class="clubstat"><strong>'+groupStreak()+'</strong><span>'+t("collectiveStreak")+'</span></div><div class="clubstat"><strong>'+DAYS+'</strong><span>'+t("dayClub")+'</span></div></div><div class="badges"><span class="badge">♡ '+t("mostConsistent")+': <b>'+shortName(b.cons)+'</b></span><span class="badge">🔥 '+t("longestStreak")+': <b>'+shortName(b.st)+'</b></span><span class="badge">✨ '+t("perfectDays")+': <b>'+shortName(b.perf)+'</b></span><span class="badge">↗ '+t("biggestComeback")+': <b>'+t("waiting")+'</b></span></div>'+(all?'<div class="perfect">'+t("perfectGlow")+'</div>':'')+'</div>';
+function groupHTML(){
+let c=clubPct(),b=badgeData(),all=Object.keys(P).every(id=>dayPct(id)===100);
+ return '<div class="group glass"><div class="grouphead"><div><div class="eyebrow">'+t("ourProgress")+'</div><h2>'+t("fourGirls")+'</h2><p>'+t("overallDesc")+'</p></div><div class="bigscore">'+hearts(c,true)+'<strong>'+c+'%</strong><small class="sub">'+t("clubAdherence")+'</small></div></div><div class="girls">'+Object.keys(P).map(id=>{let p=P[id],a=adherence(id);return '<button class="girl" data-route="'+id+'"><div class="girltop"><span>'+p.icon+' '+shortName(id)+'</span><strong>'+a+'%</strong></div>'+hearts(a)+'<div class="girlmeta"><span>🔥 '+streak(id)+' '+t("dayStreak")+'</span><span>✦ '+level(a)+'</span></div></button>'}).join('')+'</div><div class="clubstats"><div class="clubstat"><strong>'+todayTogether()+'%</strong><span>'+t("todayTogether")+'</span></div><div class="clubstat"><strong>'+groupStreak()+'</strong><span>'+t("collectiveStreak")+'</span></div><div class="clubstat"><strong>'+DAYS+'</strong><span>'+t("dayClub")+'</span></div></div><div class="badges"><span class="badge">♡ '+t("mostConsistent")+': <b>'+shortName(b.cons)+'</b></span><span class="badge">🔥 '+t("longestStreak")+': <b>'+shortName(b.st)+'</b></span><span class="badge">✨ '+t("perfectDays")+': <b>'+shortName(b.perf)+'</b></span><span class="badge">↗ '+t("biggestComeback")+': <b>'+t("waiting")+'</b></span></div>'+(all?'<div class="perfect">'+t("perfectGlow")+'</div>':'')+'</div>';
 }
+function renderGroup(){qs("#group").innerHTML=CURRENT_ROUTE==="home"?"":groupHTML()}
 
 function todaysActivity(id){
  return [...habitCache.values()]
@@ -127,7 +128,9 @@ function activityHTML(){
 
 function home(){
  let c=clubPct();
- return '<div class="hero"><div class="heroCard glass"><div class="eyebrow">'+t("challenge")+'</div><h1>'+t("pretty")+'</h1><p>'+t("heroDesc")+'</p><div class="moodshape"></div></div><div class="miniStack"><div class="card glass"><div class="eyebrow">'+t("clubEnergy")+'</div><h3>'+c+'% '+t("glowing")+'</h3><p class="sub">'+t("tiny")+'</p>'+hearts(c,true)+'</div><div class="card glass"><div class="eyebrow">'+t("today")+'</div><h3>'+todayTogether()+'% '+t("together")+'</h3><p class="sub">'+t("collectiveStreak")+': 🔥 '+groupStreak()+' '+t("days")+'</p></div></div></div><div class="profiles">'+Object.keys(P).map(id=>{let p=P[id],a=adherence(id);return '<article class="profileCard '+p.bg+'" data-route="'+id+'" style="background-image:linear-gradient(180deg,rgba(0,0,0,.04),rgba(0,0,0,.72)),url(\''+p.homeHero+'\')"><span class="profileMini" style="background-image:url(\''+p.alt+'\')"></span><div class="tag">'+p.icon+' '+personTag(id)+'</div><h3>'+shortName(id)+'</h3><div class="score"><span>'+hearts(a)+'</span><b>'+a+'%</b></div></article>'}).join('')+'</div>'+activityHTML()+'<div class="grid2"><div class="card glass"><div class="sectionTitle"><div><h3>'+t("todayGlance")+'</h3><div class="sub">'+t("day")+' '+(nowDay()+1)+' / 90</div></div><span class="pill">'+t("live")+'</span></div><div class="todayCards">'+Object.keys(P).map(id=>'<div class="todayOne"><header><span>'+P[id].icon+' '+shortName(id)+'</span><b>'+dayPct(id)+'%</b></header>'+hearts(dayPct(id))+'<small>'+level(adherence(id))+'</small></div>').join('')+'</div></div><div class="card glass"><div class="sectionTitle"><div><h3>'+t("thisWeek")+'</h3><div class="sub">'+t("smallWins")+'</div></div></div>'+Object.keys(P).map(id=>'<div class="row"><span>'+P[id].icon+' '+shortName(id)+'</span><span>'+hearts(weekAvg(id))+'</span><b>'+weekAvg(id)+'%</b></div>').join('')+'</div></div>';
+ const profileCards='<div class="profiles homeProfiles">'+Object.keys(P).map(id=>{let p=P[id],a=adherence(id);return '<article class="profileCard '+p.bg+'" data-route="'+id+'" style="background-image:linear-gradient(180deg,rgba(0,0,0,.02),rgba(0,0,0,.66)),url(\''+p.homeHero+'\')"><div class="tag">'+p.icon+' '+personTag(id)+'</div><h3>'+shortName(id)+'</h3><div class="score"><span>'+hearts(a)+'</span><b>'+a+'%</b></div></article>'}).join('')+'</div>';
+ const sweetStats='<div class="hero homeStats"><div class="card glass"><div class="eyebrow">'+t("clubEnergy")+'</div><h3>'+c+'% '+t("glowing")+'</h3><p class="sub">'+t("tiny")+'</p>'+hearts(c,true)+'</div><div class="card glass"><div class="eyebrow">'+t("today")+'</div><h3>'+todayTogether()+'% '+t("together")+'</h3><p class="sub">'+t("collectiveStreak")+': 🔥 '+groupStreak()+' '+t("days")+'</p></div></div>';
+ return profileCards+groupHTML()+sweetStats+activityHTML()+'<div class="grid2"><div class="card glass"><div class="sectionTitle"><div><h3>'+t("todayGlance")+'</h3><div class="sub">'+t("day")+' '+(nowDay()+1)+' / 90</div></div><span class="pill">'+t("live")+'</span></div><div class="todayCards">'+Object.keys(P).map(id=>'<div class="todayOne"><header><span>'+P[id].icon+' '+shortName(id)+'</span><b>'+dayPct(id)+'%</b></header>'+hearts(dayPct(id))+'<small>'+level(adherence(id))+'</small></div>').join('')+'</div></div><div class="card glass"><div class="sectionTitle"><div><h3>'+t("thisWeek")+'</h3><div class="sub">'+t("smallWins")+'</div></div></div>'+Object.keys(P).map(id=>'<div class="row"><span>'+P[id].icon+' '+shortName(id)+'</span><span>'+hearts(weekAvg(id))+'</span><b>'+weekAvg(id)+'%</b></div>').join('')+'</div></div>';
 }
 
 function checkList(type,id,sub,items){
@@ -170,7 +173,7 @@ function setLang(lang){LANG=lang;localStorage.setItem("gc:lang",LANG);updateStat
 function toast(msg){let el=qs("#toast");el.textContent=msg||t("saved");el.classList.add("show");setTimeout(()=>el.classList.remove("show"),1000)}
 function showGate(){qs("#gate").classList.add("show")}
 function hideGate(){qs("#gate").classList.remove("show")}
-function selectGirl(id){ACTIVE_USER=id;if(qs("#remember").checked){localStorage.setItem("gc:user",id);sessionStorage.removeItem("gc:user")}else{sessionStorage.setItem("gc:user",id);localStorage.removeItem("gc:user")}hideGate();route(id)}
+function selectGirl(id){ACTIVE_USER=id;if(qs("#remember").checked){localStorage.setItem("gc:user",id);sessionStorage.removeItem("gc:user")}else{sessionStorage.setItem("gc:user",id);localStorage.removeItem("gc:user")}hideGate();route("home")}
 
 async function persistHabit(type,id,sub,item,value){
  const row={profile_id:id,category:type,period_key:sub,item_key:item,completed:value,updated_at:new Date().toISOString()};
@@ -255,7 +258,7 @@ function clock(){
 
 updateStatic();
 route("home");
-if(ACTIVE_USER&&P[ACTIVE_USER])route(ACTIVE_USER);else showGate();
+if(!ACTIVE_USER||!P[ACTIVE_USER])showGate();
 loadSharedData();
 subscribeRealtime();
 setInterval(clock,30000);
