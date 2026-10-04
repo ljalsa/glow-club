@@ -7,7 +7,7 @@
 <title>Glow Club ♡</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=DM+Sans:wght@400;500;600;700&family=Noto+Kufi+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root{--bg:#f7eef3;--panel:rgba(255,255,255,.76);--panel2:#fffafd;--ink:#5d4553;--muted:#99828e;--line:rgba(87,61,76,.11);--accent:#d995b3;--soft:#f7dce8;--soft2:#efe5ea;--shadow:0 22px 65px rgba(92,56,75,.12)}
 *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;min-height:100vh;font-family:"DM Sans",system-ui,sans-serif;color:var(--ink);background:radial-gradient(circle at 8% 3%,var(--soft),transparent 28%),radial-gradient(circle at 94% 8%,var(--soft2),transparent 32%),linear-gradient(145deg,#fff,#f7eef3);transition:.3s}
@@ -25,9 +25,22 @@ main{min-width:0}.group{padding:20px;border-radius:28px;margin-bottom:18px;posit
 .gate{position:fixed;inset:0;z-index:99;display:grid;place-items:center;padding:18px;background:rgba(248,242,245,.86);backdrop-filter:blur(28px);-webkit-backdrop-filter:blur(28px);opacity:0;pointer-events:none;transition:.25s}.gate.show{opacity:1;pointer-events:auto}.gatePanel{width:min(900px,100%);padding:28px;border-radius:34px}.gatePanel h1{font-size:70px;line-height:.9;margin:8px 0}.gateGrid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:22px}.pick{border:1px solid var(--line);border-radius:22px;padding:12px;text-align:left;cursor:pointer;min-height:170px;display:flex;flex-direction:column;justify-content:flex-end}.pick strong{font:700 25px "Cormorant Garamond"}.pick small{font-size:9px}.remember{display:flex;align-items:center;gap:8px;margin-top:15px;font-size:10px;color:var(--muted)}.mobileNav{display:none}.toast{position:fixed;z-index:120;left:50%;top:16px;transform:translateX(-50%) translateY(-20px);opacity:0;background:var(--panel2);border:1px solid var(--line);box-shadow:var(--shadow);padding:10px 14px;border-radius:999px;font-size:11px;font-weight:800;transition:.25s}.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 @media(max-width:980px){.shell{grid-template-columns:1fr;max-width:680px;padding:14px 14px 100px}.side{display:none}.girls,.profiles{grid-template-columns:1fr 1fr}.hero,.profileTop,.taskGrid,.grid2{grid-template-columns:1fr}.insights{grid-template-columns:1fr}.mobileNav{display:flex;position:fixed;z-index:60;bottom:10px;left:50%;transform:translateX(-50%);width:min(calc(100% - 20px),650px);padding:7px;border-radius:20px;justify-content:space-around}.mobileNav button{border:0;background:transparent;color:var(--muted);border-radius:12px;padding:7px;font-size:10px}.mobileNav button.active{background:var(--soft);color:var(--ink)}.grouphead{flex-direction:column}.bigscore{text-align:left}.gateGrid{grid-template-columns:1fr 1fr}.gatePanel h1{font-size:52px}}
 @media(max-width:560px){.girls,.profiles,.todayCards,.clubstats{grid-template-columns:1fr}.gatePanel{padding:17px}.gateGrid{gap:7px}.pick{min-height:130px;padding:9px}.profileInfo h2{font-size:46px}.moodboard{min-height:280px}.heart.big span{font-size:19px}.group h2{font-size:33px}}
+
+.langSwitch{position:fixed;top:16px;right:18px;z-index:90;display:flex;gap:4px;padding:5px;border-radius:999px;background:var(--panel);border:1px solid var(--line);box-shadow:var(--shadow);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px)}
+.langSwitch button{border:0;background:transparent;color:var(--muted);padding:7px 11px;border-radius:999px;font-size:10px;font-weight:800;cursor:pointer}
+.langSwitch button.active{background:var(--soft);color:var(--ink)}
+html[dir="rtl"] body{font-family:"Noto Kufi Arabic","DM Sans",system-ui,sans-serif}
+html[dir="rtl"] h1,html[dir="rtl"] h2,html[dir="rtl"] h3,html[dir="rtl"] .brand,html[dir="rtl"] .clock,html[dir="rtl"] .quote,html[dir="rtl"] .bigscore strong,html[dir="rtl"] .clubstat strong,html[dir="rtl"] .profileInfo h2,html[dir="rtl"] .stat strong{font-family:"Noto Kufi Arabic","DM Sans",system-ui,sans-serif}
+html[dir="rtl"] .nav button,html[dir="rtl"] .girl,html[dir="rtl"] .pick{text-align:right}
+html[dir="rtl"] .langSwitch{right:auto;left:18px}
+html[dir="rtl"] .group:after{right:auto;left:-15px}
+html[dir="rtl"] .bigscore{text-align:left}
+@media(max-width:980px){.langSwitch{top:10px;right:10px}html[dir="rtl"] .langSwitch{right:auto;left:10px}.shell{padding-top:58px}}
+
 </style>
 </head>
 <body data-theme="club">
+<div class="langSwitch" id="langSwitch"><button data-lang="ar">عربي</button><button data-lang="en">English</button></div>
 <div class="toast" id="toast">Saved ♡</div>
 <div class="gate" id="gate">
   <div class="gatePanel glass">
@@ -76,55 +89,6 @@ main{min-width:0}.group{padding:20px;border-radius:28px;margin-bottom:18px;posit
 <button data-route="munira">👑<br>Munira</button>
 </nav>
 
-<script>
-const START=new Date(2026,9,4),DAYS=90;
-const P={
- lely:{name:"Lujain",short:"Lely",icon:"🎀",theme:"lely",tag:"pink tennis · café · quiet luxury",quote:"soft discipline, pretty results",bg:"lelyBg",moods:["🎾 tennis mornings","☕ Monaco café","🎀 baby pink"]},
- rand:{name:"Rand",short:"Rand",icon:"🐆",theme:"rand",tag:"navy luxury · burgundy · quiet edge",quote:"consistency looks expensive",bg:"randBg",moods:["🌙 navy nights","🐆 subtle jaguar","🍷 burgundy"]},
- renad:{name:"Renad",short:"Renad",icon:"🐚",theme:"renad",tag:"seafoam · pearls · island girl",quote:"flow, glow, repeat",bg:"renadBg",moods:["🌊 clear water","🫧 pearls","⛵ yacht day"]},
- munira:{name:"Munira",short:"Munira",icon:"👑",theme:"munira",tag:"old money · equestrian · blush gold",quote:"grace with a little power",bg:"muniraBg",moods:["🐎 equestrian","🌸 princess blush","🥂 champagne gold"]}
-};
-const daily=["Water goal","Movement","Skincare AM","Skincare PM","Protein focus","Tidy 10 min","Sleep routine"];
-const weekly=["Hair ritual","Room reset","Plan the week","One self-care appointment","Progress photo"];
-const monthly=["Measurements","Progress photos","Monthly reflection","Choose a little reward"];
-const moods=["🥰","🙂","😌","😴","🥲"];
-const $=q=>document.querySelector(q),$$=q=>[...document.querySelectorAll(q)];
-function nowDay(){return Math.max(0,Math.min(DAYS-1,Math.floor((new Date()-START)/86400000)))}
-function dkey(i=nowDay()){let d=new Date(START);d.setDate(d.getDate()+i);return d.toISOString().slice(0,10)}
-function widx(){return Math.floor(nowDay()/7)}
-function mkey(){let d=new Date();return d.toISOString().slice(0,7)}
-function key(t,id,sub,item){return "gc:"+[t,id,sub,item].join("|")}
-function done(t,id,sub,item){return localStorage.getItem(key(t,id,sub,item))==="1"}
-function setDone(t,id,sub,item,v){localStorage.setItem(key(t,id,sub,item),v?"1":"0")}
-function pct(t,id,sub,items){let n=items.filter(x=>done(t,id,sub,x)).length;return Math.round(n/items.length*100)}
-function dayPct(id,i=nowDay()){return pct("d",id,dkey(i),daily)}
-function weekPct(id){return pct("w",id,"w"+(widx()+1),weekly)}
-function monthPct(id){return pct("m",id,mkey(),monthly)}
-function adherence(id){let upto=nowDay(),sum=0,n=0;for(let i=0;i<=upto;i++){sum+=dayPct(id,i);n++}sum+=weekPct(id);n++;sum+=monthPct(id);n++;return Math.round(sum/n)}
-function streak(id){let s=0;for(let i=nowDay();i>=0;i--){if(dayPct(id,i)>=80)s++;else break}return s}
-function perfectDays(id){let n=0;for(let i=0;i<=nowDay();i++)if(dayPct(id,i)===100)n++;return n}
-function hearts(p,big=false){let n=Math.round(p/12.5);return '<div class="heart '+(big?'big':'')+'">'+Array.from({length:8},(_,i)=>'<span class="'+(i<n?'on':'')+'">♥</span>').join('')+'</div>'}
-function level(a){return a<25?"warming up":a<55?"finding rhythm":a<80?"glowing":a<95?"in her era":"main character"}
-function groupStreak(){let s=0;for(let i=nowDay();i>=0;i--){let ok=Object.keys(P).every(id=>dayPct(id,i)>=80);if(ok)s++;else break}return s}
-function clubPct(){let a=Object.keys(P).map(adherence);return Math.round(a.reduce((x,y)=>x+y,0)/a.length)}
-function todayTogether(){let a=Object.keys(P).map(id=>dayPct(id));return Math.round(a.reduce((x,y)=>x+y,0)/a.length)}
-function badgeData(){let ids=Object.keys(P),cons=[...ids].sort((a,b)=>adherence(b)-adherence(a))[0],st=[...ids].sort((a,b)=>streak(b)-streak(a))[0],perf=[...ids].sort((a,b)=>perfectDays(b)-perfectDays(a))[0];return {cons,st,perf}}
-function renderGroup(){let c=clubPct(),b=badgeData(),all=Object.keys(P).every(id=>dayPct(id)===100);$("#group").innerHTML='<div class="group glass"><div class="grouphead"><div><div class="eyebrow">OUR GLOW PROGRESS ♡</div><h2>Four girls, one glow club.</h2><p>Overall adherence across daily habits + weekly resets + monthly rituals.</p></div><div class="bigscore">'+hearts(c,true)+'<strong>'+c+'%</strong><small class="sub">club adherence</small></div></div><div class="girls">'+Object.keys(P).map(id=>{let p=P[id],a=adherence(id);return '<button class="girl" data-route="'+id+'"><div class="girltop"><span>'+p.icon+' '+p.short+'</span><strong>'+a+'%</strong></div>'+hearts(a)+'<div class="girlmeta"><span>🔥 '+streak(id)+' day streak</span><span>✦ '+level(a)+'</span></div></button>'}).join('')+'</div><div class="clubstats"><div class="clubstat"><strong>'+todayTogether()+'%</strong><span>today together</span></div><div class="clubstat"><strong>'+groupStreak()+'</strong><span>collective streak</span></div><div class="clubstat"><strong>'+Object.values(P).reduce((n,p,id)=>n,0)+'</strong><span>90 day club</span></div></div><div class="badges"><span class="badge">♡ Most Consistent: <b>'+P[b.cons].short+'</b></span><span class="badge">🔥 Longest Streak: <b>'+P[b.st].short+'</b></span><span class="badge">✨ Perfect Days: <b>'+P[b.perf].short+'</b></span><span class="badge">↗ Biggest Comeback: <b>waiting to crown</b></span></div>'+(all?'<div class="perfect">✨ Perfect Glow Day — all four of you did it ♡</div>':'')+'</div>'}
-function home(){let c=clubPct();return '<div class="hero"><div class="heroCard glass"><div class="eyebrow">THE 90-DAY GLOW CLUB</div><h1>Pretty habits.<br>Real progress.</h1><p>A soft, motivating dashboard for the four of you — today first, with streaks, hearts, weekly resets and monthly rituals without turning your life into a spreadsheet.</p><div class="moodshape"></div></div><div class="miniStack"><div class="card glass"><div class="eyebrow">CLUB ENERGY</div><h3>'+c+'% glowing</h3><p class="sub">Every tiny check counts toward the same 90-day story.</p>'+hearts(c,true)+'</div><div class="card glass"><div class="eyebrow">TODAY</div><h3>'+todayTogether()+'% together</h3><p class="sub">Collective streak: 🔥 '+groupStreak()+' days</p></div></div></div><div class="profiles">'+Object.keys(P).map(id=>{let p=P[id],a=adherence(id);return '<article class="profileCard '+p.bg+'" data-route="'+id+'"><div class="tag">'+p.icon+' '+p.tag+'</div><h3>'+p.short+'</h3><div class="score"><span>'+hearts(a)+'</span><b>'+a+'%</b></div></article>'}).join('')+'</div><div class="grid2"><div class="card glass"><div class="sectionTitle"><div><h3>Today at a glance</h3><div class="sub">Day '+(nowDay()+1)+' / 90</div></div><span class="pill">♡ live</span></div><div class="todayCards">'+Object.keys(P).map(id=>'<div class="todayOne"><header><span>'+P[id].icon+' '+P[id].short+'</span><b>'+dayPct(id)+'%</b></header>'+hearts(dayPct(id))+'<small>'+level(adherence(id))+'</small></div>').join('')+'</div></div><div class="card glass"><div class="sectionTitle"><div><h3>This week</h3><div class="sub">small wins compound</div></div></div>'+Object.keys(P).map(id=>'<div class="row"><span>'+P[id].icon+' '+P[id].short+'</span><span>'+hearts(weekAvg(id))+'</span><b>'+weekAvg(id)+'%</b></div>').join('')+'</div></div>'}
-function weekAvg(id){let s=widx()*7,e=Math.min(nowDay(),s+6),sum=0,n=0;for(let i=s;i<=e;i++){sum+=dayPct(id,i);n++}return n?Math.round(sum/n):0}
-function nextFocus(id){return daily.find(x=>!done("d",id,dkey(),x))||null}
-function checkList(t,id,sub,items){return '<div class="checks">'+items.map(item=>'<label class="check"><span>'+item+'</span><input type="checkbox" data-check data-t="'+t+'" data-id="'+id+'" data-sub="'+sub+'" data-item="'+item.replace(/"/g,'&quot;')+'" '+(done(t,id,sub,item)?'checked':'')+'></label>').join('')+'</div>'}
-function weekStrip(id){let s=widx()*7;return '<div class="weekstrip">'+Array.from({length:7},(_,j)=>{let i=s+j,p=i<=nowDay()?dayPct(id,i):0,d=new Date(START);d.setDate(d.getDate()+i);return '<div class="daydot '+(i===nowDay()?'today':'')+'"><span>'+["S","M","T","W","T","F","S"][j]+'</span><b>'+p+'%</b></div>'}).join('')+'</div>'}
-function profile(id){let p=P[id],a=adherence(id),focus=nextFocus(id),m=localStorage.getItem("gc:mood:"+id+":"+dkey())||"";return '<div class="profileTop"><div class="moodboard glass"><div class="moodTile big '+p.bg+'"><span>'+p.moods[0]+'</span></div><div class="moodTile '+p.bg+'"><span>'+p.moods[1]+'</span></div><div class="moodTile '+p.bg+'"><span>'+p.moods[2]+'</span></div></div><div class="profileInfo glass"><div class="eyebrow">'+p.icon+' PERSONAL WORLD · DAY '+(nowDay()+1)+'</div><h2>'+p.name+'&apos;s<br>corner</h2><p class="sub">'+p.tag+'</p><p style="font:600 20px Cormorant Garamond;margin-top:14px">“'+p.quote+'”</p><div class="adherence"><div><strong>'+a+'%</strong><div class="sub">OVERALL ADHERENCE</div>'+hearts(a,true)+'</div><div class="streaks"><span>🔥 '+streak(id)+' day streak</span><span>♡ '+perfectDays(id)+' perfect days</span><span>✦ '+level(a)+'</span></div></div><div class="profileStats"><div class="stat"><strong>'+dayPct(id)+'%</strong><small>TODAY</small></div><div class="stat"><strong>'+weekPct(id)+'%</strong><small>WEEKLY</small></div><div class="stat"><strong>'+monthPct(id)+'%</strong><small>MONTH</small></div></div></div></div><div class="insights"><div class="insight glass"><div class="eyebrow">TODAY&apos;S FOCUS</div><h3>'+(focus||"Perfect day ♡")+'</h3><p class="sub">'+(focus?"One tiny tap. Keep the momentum soft and simple.":"Every daily habit is checked. Main-character behavior.")+'</p>'+(focus?'<button class="switch" data-focus="'+id+'" data-item="'+focus+'">Mark it done ♡</button>':'')+'</div><div class="insight glass"><div class="eyebrow">CURRENT STREAK</div><h3>🔥 '+streak(id)+' days</h3><p class="sub">A day counts at 80%+ completion.</p>'+weekStrip(id)+'</div><div class="insight glass"><div class="eyebrow">MOOD CHECK-IN</div><h3>How are you?</h3><div class="moods">'+moods.map(x=>'<button data-mood="'+id+'" data-value="'+x+'" class="'+(m===x?'active':'')+'">'+x+'</button>').join('')+'</div></div></div><div class="taskGrid"><div class="card glass"><div class="sectionTitle"><div><h3>Today</h3><div class="sub">'+dkey()+'</div></div><span class="pill">'+dayPct(id)+'%</span></div>'+checkList("d",id,dkey(),daily)+'</div><div class="card glass"><div class="sectionTitle"><div><h3>This week</h3><div class="sub">Week '+(widx()+1)+'</div></div><span class="pill">'+weekPct(id)+'%</span></div>'+checkList("w",id,"w"+(widx()+1),weekly)+'</div><div class="card glass"><div class="sectionTitle"><div><h3>Current month</h3><div class="sub">'+mkey()+'</div></div><span class="pill">'+monthPct(id)+'%</span></div>'+checkList("m",id,mkey(),monthly)+'</div><div class="card glass"><div class="sectionTitle"><div><h3>Glow notes</h3><div class="sub">gentle reminders</div></div></div><div class="row"><span>♡ Most important</span><small>consistency &gt; perfection</small></div><div class="row"><span>✦ Current level</span><small>'+level(a)+'</small></div><div class="row"><span>🔥 Streak rule</span><small>80%+ keeps it alive</small></div></div></div>'}
-function route(r){$$("[data-route]").forEach(x=>x.classList.toggle("active",x.dataset.route===r));if(r==="home"){document.body.dataset.theme="club";$("#view").innerHTML=home()}else{document.body.dataset.theme=P[r].theme;$("#view").innerHTML=profile(r)}renderGroup();window.scrollTo({top:0,behavior:"smooth"})}
-function toast(){let t=$("#toast");t.classList.add("show");setTimeout(()=>t.classList.remove("show"),900)}
-function showGate(){$("#gate").classList.add("show")}
-function hideGate(){$("#gate").classList.remove("show")}
-function selectGirl(id){if($("#remember").checked)localStorage.setItem("gc:user",id);else sessionStorage.setItem("gc:user",id);hideGate();route(id)}
-document.addEventListener("click",e=>{let p=e.target.closest("[data-pick]");if(p)return selectGirl(p.dataset.pick);let r=e.target.closest("[data-route]");if(r)return route(r.dataset.route);if(e.target.closest("#switch"))return showGate();let f=e.target.closest("[data-focus]");if(f){setDone("d",f.dataset.focus,dkey(),f.dataset.item,true);toast();return route(f.dataset.focus)}let mo=e.target.closest("[data-mood]");if(mo){localStorage.setItem("gc:mood:"+mo.dataset.mood+":"+dkey(),mo.dataset.value);toast();return route(mo.dataset.mood)}});
-document.addEventListener("change",e=>{if(!e.target.matches("[data-check]"))return;let x=e.target;setDone(x.dataset.t,x.dataset.id,x.dataset.sub,x.dataset.item,x.checked);toast();route(x.dataset.id)});
-function clock(){let d=new Date();$("#clock").textContent=d.toLocaleTimeString([], {hour:"2-digit",minute:"2-digit"});$("#date").textContent=d.toLocaleDateString("en-GB",{weekday:"long",day:"numeric",month:"long"});$("#daypill").textContent="Day "+(nowDay()+1)+" / 90"}clock();setInterval(clock,30000);
-route("home");let remembered=localStorage.getItem("gc:user")||sessionStorage.getItem("gc:user");if(remembered&&P[remembered])route(remembered);else showGate();
-</script>
+<script src="app.js"></script>
 </body>
 </html>
