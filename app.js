@@ -2,7 +2,15 @@
 const START=new Date(2026,9,4),DAYS=90;
 const SUPABASE_URL="https://arxwofeqnwcbpykjghnp.supabase.co";
 const SUPABASE_KEY="sb_publishable_1OQFhX42PEhMsPZymx5Z-w_H4okcsgh";
-const db=(window.supabase&&window.supabase.createClient)?window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY):null;
+let db=null;
+let realtimeStarted=false;
+function initSupabase(){
+ if(db||!window.supabase||!window.supabase.createClient)return;
+ db=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+ loadSharedData();
+ subscribeRealtime();
+}
+window.initSupabase=initSupabase;
 
 let LANG=localStorage.getItem("gc:lang")||"en";
 let CURRENT_ROUTE="home";
@@ -228,7 +236,8 @@ async function loadSharedData(){
  }catch(e){console.error(e)}
 }
 function subscribeRealtime(){
- if(!db)return;
+ if(!db||realtimeStarted)return;
+ realtimeStarted=true;
  db.channel("glow-club-live")
    .on("postgres_changes",{event:"*",schema:"public",table:"habit_entries"},payload=>{
       const r=payload.new;if(!r||!r.profile_id)return;
@@ -264,6 +273,5 @@ function clock(){
 updateStatic();
 route("home");
 if(!ACTIVE_USER||!P[ACTIVE_USER])showGate();
-loadSharedData();
-subscribeRealtime();
+initSupabase();
 setInterval(clock,30000);
