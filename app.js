@@ -2,7 +2,7 @@
 const START=new Date(2026,9,4),DAYS=90;
 const SUPABASE_URL="https://arxwofeqnwcbpykjghnp.supabase.co";
 const SUPABASE_KEY="sb_publishable_1OQFhX42PEhMsPZymx5Z-w_H4okcsgh";
-const db=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+const db=(window.supabase&&window.supabase.createClient)?window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY):null;
 
 let LANG=localStorage.getItem("gc:lang")||"en";
 let CURRENT_ROUTE="home";
@@ -181,6 +181,7 @@ async function persistHabit(type,id,sub,item,value){
  localStorage.setItem(localKey(type,id,sub,item),value?"1":"0");
  route(CURRENT_ROUTE);
  toast(t("saving"));
+ if(!db){toast();return}
  const {error}=await db.from("habit_entries").upsert(row,{onConflict:"profile_id,category,period_key,item_key"});
  if(error){console.error(error);toast("Sync error");return}
  toast();
@@ -190,11 +191,13 @@ async function persistMood(id,value){
  moodCache.set(id+"|"+dkey(),row);
  localStorage.setItem("gc:mood:"+id+":"+dkey(),value);
  route(CURRENT_ROUTE);
+ if(!db){toast();return}
  const {error}=await db.from("mood_entries").upsert(row,{onConflict:"profile_id,day_key"});
  if(error){console.error(error);toast("Sync error");return}
  toast();
 }
 async function migrateLocalData(){
+ if(!db)return;
  const rows=[];
  for(let i=0;i<localStorage.length;i++){
    const k=localStorage.key(i);
@@ -209,6 +212,7 @@ async function migrateLocalData(){
  if(rows.length) await db.from("habit_entries").upsert(rows,{onConflict:"profile_id,category,period_key,item_key"});
 }
 async function loadSharedData(){
+ if(!db){SYNC_READY=false;return}
  try{
    const [{data:h,error:he},{data:m,error:me}]=await Promise.all([
      db.from("habit_entries").select("profile_id,category,period_key,item_key,completed,updated_at"),
@@ -224,6 +228,7 @@ async function loadSharedData(){
  }catch(e){console.error(e)}
 }
 function subscribeRealtime(){
+ if(!db)return;
  db.channel("glow-club-live")
    .on("postgres_changes",{event:"*",schema:"public",table:"habit_entries"},payload=>{
       const r=payload.new;if(!r||!r.profile_id)return;
